@@ -5,6 +5,7 @@ import com.l.libsys.repo.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -12,8 +13,10 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
 
     public BookServiceImpl(BookRepository bookRepo) {
+
         this.bookRepo = bookRepo;
     }
+
     @Override
     public Book createNewBook(Book book) {
         Optional<Book> existingBook = bookRepo.findByIsbn(book.getIsbn());
@@ -21,6 +24,11 @@ public class BookServiceImpl implements BookService {
             throw new RuntimeException("A Book with ISBN: " + book.getIsbn() + " already exists");
         }
         return bookRepo.save(book);
+    }
+
+    @Override
+    public List<Book> getAllBooks() {
+        return bookRepo.findAll();
     }
 }
    /* @Override

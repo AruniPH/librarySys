@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 @RequestMapping("/book")
@@ -25,4 +27,11 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
+    // endpoint to get all books
+    @GetMapping("/all")
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookservice.getAllBooks();
+        return ResponseEntity.status(HttpStatus.OK).body(books);
+    }
+
 }
