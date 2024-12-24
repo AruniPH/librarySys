@@ -4,14 +4,15 @@ import com.l.libsys.entity.Book;
 import com.l.libsys.repo.BookRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.Optional;
 import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
-    // Constructor injection of BookRepository
+    private static final Logger logger = LoggerFactory.getLogger(BookServiceImpl.class);
     public BookServiceImpl(BookRepository bookRepo) {
         this.bookRepo = bookRepo;
     }
@@ -40,14 +41,25 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book updateBookByIsbn(String isbn, Book updatedBook) {
-        //BookRepository BookRepo = null;
+
         return bookRepo.findByIsbn(isbn).map(existingBook -> {
             existingBook.setAvailability(updatedBook.getAvailability());
             existingBook.setAuthor(updatedBook.getAuthor());
             existingBook.setTitle(updatedBook.getTitle());
-           // Book save = BookRepository.<Book>save(existingBook);
+            // Book save = BookRepository.<Book>save(existingBook);
             return bookRepo.save(existingBook);
         }).orElseThrow(() -> new RuntimeException("Book with ISBN " + isbn + " not found"));
+    }
+
+    @Override
+    @Transactional
+
+    public Optional<Book> deleteBookByIsbn(String isbn) {
+        return bookRepo.findByIsbn(isbn).map(Book -> {
+            bookRepo.delete(Book);
+            logger.info("Deleted Student with ISBN: {}", isbn);
+            return Book;
+        });
     }
 }
    /* @Override
