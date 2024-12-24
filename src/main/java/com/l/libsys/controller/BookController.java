@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200/")
 @RestController
@@ -56,6 +57,17 @@ public class BookController {
             return ResponseEntity.ok(updated);
         } catch (RuntimeException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Delete a book by isbn
+    @DeleteMapping("/delete/isbn/{isbn}")
+    public ResponseEntity<String> deleteBookByIsbn(@PathVariable String isbn) {
+        Optional<Book> Book = bookservice.deleteBookByIsbn(isbn);
+        if (Book.isPresent()) {
+            return ResponseEntity.ok("Deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book with ISBN " + isbn + " not found");
         }
     }
 }
