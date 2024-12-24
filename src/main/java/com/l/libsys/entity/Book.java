@@ -42,4 +42,7 @@ public class Book {
         this.availability = availability;
     }
 
+    public boolean getAvailability() {
+        return availability;
+    }
 }

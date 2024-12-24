@@ -16,6 +16,7 @@ public class BookController {
 
     @Autowired
     private BookService bookservice;
+    private Book updatedBook;
 
     @PostMapping("/add")
     public ResponseEntity<?> createBook(@RequestBody Book book) {
@@ -30,8 +31,31 @@ public class BookController {
     // endpoint to get all books
     @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks() {
+        //String isbn;
         List<Book> books = bookservice.getAllBooks();
         return ResponseEntity.status(HttpStatus.OK).body(books);
     }
 
+    // New endpoint: Get book by isbn
+    @GetMapping("/isbn/{isbn}")
+    public ResponseEntity<Book> getBookByIsbn(@PathVariable String isbn) {
+        return bookservice.getBookDetailsByIsbn(isbn)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    // New endpoint: Update book by isbn
+    @PutMapping("/update/isbn/{isbn}")
+    public ResponseEntity<Book> updateBookByIsbn(
+            @PathVariable String isbn,
+            @RequestBody Book updatedBook) {
+        try {
+          
+            Book updated;
+            updated = bookservice.updateBookByIsbn(isbn, updatedBook);
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
