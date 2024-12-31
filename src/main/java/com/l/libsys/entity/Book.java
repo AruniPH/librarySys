@@ -18,31 +18,28 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="isbn", unique=true, nullable = false)
+    @Column(name = "isbn", unique = true, nullable = false)
     private String isbn;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="author")
+    @Column(name = "author")
     private String author;
 
     // @Column(name="availability")
     //private byte[] availability;
     //private boolean availability;
 
-    @Column(nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
-    private boolean availability;
+    @Column(name = "publisher")
+    private String publisher;
 
     // Optional: Custom constructor for ease of use
-    public Book(String isbn, String title, String author, boolean availability) {
+    public Book(String isbn, String title, String author, String publisher) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
-        this.availability = availability;
-    }
-
-    public boolean getAvailability() {
-        return availability;
+        this.publisher = publisher;
     }
 }
+

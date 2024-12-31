@@ -62,12 +62,13 @@ public class BookController {
 
     // Delete a book by isbn
     @DeleteMapping("/delete/isbn/{isbn}")
-    public ResponseEntity<String> deleteBookByIsbn(@PathVariable String isbn) {
-        Optional<Book> Book = bookservice.deleteBookByIsbn(isbn);
-        if (Book.isPresent()) {
-            return ResponseEntity.ok("Deleted successfully");
+    public ResponseEntity<Void> deleteBookByIsbn(@PathVariable String isbn) {
+        Optional<Book> book = bookservice.deleteBookByIsbn(isbn);
+        if (book.isPresent()) {
+            return ResponseEntity.noContent().build(); // Return 204 No Content
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book with ISBN " + isbn + " not found");
+            //return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book with ISBN " + isbn + " not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 }
