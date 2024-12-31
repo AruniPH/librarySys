@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
     public Book updateBookByIsbn(String isbn, Book updatedBook) {
 
         return bookRepo.findByIsbn(isbn).map(existingBook -> {
-            existingBook.setAvailability(updatedBook.getAvailability());
+            existingBook.setPublisher(updatedBook.getPublisher());
             existingBook.setAuthor(updatedBook.getAuthor());
             existingBook.setTitle(updatedBook.getTitle());
             // Book save = BookRepository.<Book>save(existingBook);
@@ -62,6 +62,7 @@ public class BookServiceImpl implements BookService {
         });
     }
 }
+
    /* @Override
     public Book createNewBook(Book book) {
         Optional<Book> existingBook = bookRepo.findById(book.getId());
